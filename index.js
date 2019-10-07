@@ -25,19 +25,18 @@ setInterval(() => {
             console.log(weatherId);
             console.log(weatherName);
     
-            if (rain.includes(weatherId) || drizzle.includes(weatherId)) {
+            if (!rain.includes(weatherId) || drizzle.includes(weatherId)) {
                 console.log("It's raining in Vancouver! ... again.");
                 T.get('statuses/user_timeline', (err,data,response) => {
-                    var reg = /(\[.\])/
+                    var reg = /\d+/
                     const num = reg.exec(data[0].text);
-                    console.log(num[0][1]);
-                    var count = num[0][1];
+                    var count = num[0];
     
                     T.post(
                         'statuses/update',
                         {status: "It's raining in Vancouver! ... again.   Rain-Count: [" + (parseInt(count)+1) + "] "},
                         (err,data,response) => {
-                            console.log(err,data,response);
+                           console.log(data);
                         }
                     );
     
